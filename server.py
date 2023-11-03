@@ -1,9 +1,20 @@
 from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from pathlib import Path
-from scripts.py_.voice_to_text import voice2text  # Asegúrate de que la ruta de importación sea correcta
+from scripts.py_.voice_to_text import voice2text
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Configura el middleware CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todas las origenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos
+    allow_headers=["*"],  # Permite todos los headers
+)
+
 last_file = ''
 v2t = voice2text()  # Instancia de la clase voice2text
 v2t.set_credentials_from_json('./credentials/openai_key.json')
