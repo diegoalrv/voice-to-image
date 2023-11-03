@@ -5,6 +5,8 @@ from scripts.py_.voice_to_text import voice2text
 from scripts.py_.text_to_image import StableDiffusionAPIConnection
 from fastapi.middleware.cors import CORSMiddleware
 from io import BytesIO
+import base64
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -60,15 +62,21 @@ async def transcribe_audio():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+class Prompt(BaseModel):
+    prompt: str
+
 @app.post("/generate-image/")
-async def generate_image_endpoint(prompt: str):
-    print(prompt)
+async def generate_image_endpoint(prompt: Prompt):
+    print(prompt.prompt)
+
     try:
-        final_image = sd_generator.process_image(prompt)
+        final_image = sd_generator.process_image(prompt.prompt)
+        print(final_image)
         img_byte_arr = BytesIO()
         final_image.save(img_byte_arr, format='PNG')
-        img_byte_arr.seek(0)
-        return StreamingResponse(img_byte_arr, media_type="image/png")
+        img_str = base64.b64encode(img_byte_arr.getvalue()).decode()
+
+        return {"image": img_str}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
