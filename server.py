@@ -1,8 +1,10 @@
 from fastapi import FastAPI, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pathlib import Path
 from scripts.py_.voice_to_text import voice2text
+from scripts.py_.text_to_image import StableDiffusionAPIConnection
 from fastapi.middleware.cors import CORSMiddleware
+from io import BytesIO
 
 app = FastAPI()
 
@@ -18,6 +20,16 @@ app.add_middleware(
 last_file = ''
 v2t = voice2text()  # Instancia de la clase voice2text
 v2t.set_credentials_from_json('./credentials/openai_key.json')
+
+s3_path = './credentials/voice_to_image_accessKeys.csv'
+sd_path = './credentials/stability-ai-api-key.json'
+bucket_name = 'stable-diffusion-city-images'
+
+sd_generator = StableDiffusionAPIConnection(
+    api_key_path=sd_path,
+    s3_credentials_csv_path=s3_path,
+    bucket_name=bucket_name
+)
 
 @app.post("/upload/")
 async def upload_audio(file: UploadFile = None):
@@ -45,6 +57,18 @@ async def transcribe_audio():
         file_path = f"./data/output/records/{last_file}"
         text = v2t.transcribe_audio_file(record_name=file_path)
         return JSONResponse(status_code=200, content={"transcription": text})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/generate-image/")
+async def generate_image_endpoint(prompt: str):
+    print(prompt)
+    try:
+        final_image = sd_generator.process_image(prompt)
+        img_byte_arr = BytesIO()
+        final_image.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
+        return StreamingResponse(img_byte_arr, media_type="image/png")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

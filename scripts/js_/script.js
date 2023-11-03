@@ -58,6 +58,37 @@ function saveAudio() {
     .then(response => response.json())
     .then(data => {
         transcriptionContainer.textContent = data.transcription; // Mostrar la transcripción
+        console.log(data.transcription)
+        return fetch('http://127.0.0.1:8000/generate-image/', { // Solicitar la generación de la imagen
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt: data.transcription })
+        });
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob(); // Obtener la imagen como un blob
+        } else {
+            throw new Error('Image generation failed');
+        }
+    })
+    .then(imageBlob => {
+        // Crear una URL para el blob de la imagen y actualizar el DOM para mostrar la imagen
+        const imageUrl = URL.createObjectURL(imageBlob);
+        const imageElement = document.createElement('img');
+        imageElement.src = imageUrl;
+        imageElement.style.width = '100%'; // Ajustar al ancho del contenedor, si es necesario
+        imageElement.style.height = 'auto';
+        imageElement.style.marginTop = '20px'; // Añadir un poco de margen superior
+
+        // Limpiar cualquier imagen existente y mostrar la nueva
+        const imageContainer = document.getElementById('imageContainer');
+        if (imageContainer) {
+            imageContainer.innerHTML = ''; // Limpiar el contenedor de imágenes
+            imageContainer.appendChild(imageElement); // Añadir la nueva imagen
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
