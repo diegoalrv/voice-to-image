@@ -1,7 +1,7 @@
 import openai
 import json
 
-class voice2text():
+class voice2text:
     def __init__(self) -> None:
         self.openai_key = None
         pass
