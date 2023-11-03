@@ -84,7 +84,7 @@ function saveAudio() {
     })
     .then(data => {
         console.log('Image data received:', data); // Imprime los datos de la imagen recibidos
-        displayGeneratedImage(data.image); // Cambiado para manejar base64
+        displayGeneratedImage(data.image); // Asegúrate de que 'data.image' es la clave correcta
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -94,9 +94,20 @@ function saveAudio() {
 function displayGeneratedImage(imageBase64) {
     const imageElement = new Image();
     imageElement.src = `data:image/jpeg;base64,${imageBase64}`;
-    imageElement.style.width = '100%';
+    imageElement.onload = () => {
+        console.log('Image loaded successfully');
+    };
+    imageElement.onerror = (error) => {
+        console.error('Error loading image:', error);
+    };
+    imageElement.style.width = '100%'; // Ajustar al ancho del contenedor, si es necesario
     imageElement.style.height = 'auto';
+    imageElement.style.marginTop = '20px'; // Añadir un poco de margen superior
 
-    imageContainer.innerHTML = ''; // Limpiar el contenedor de imágenes
-    imageContainer.appendChild(imageElement); // Añadir la nueva imagen
+    // Limpiar cualquier imagen existente y mostrar la nueva
+    const imageContainer = document.getElementById('imageContainer');
+    if (imageContainer) {
+        imageContainer.innerHTML = ''; // Limpiar el contenedor de imágenes
+        imageContainer.appendChild(imageElement); // Añadir la nueva imagen
+    }
 }
