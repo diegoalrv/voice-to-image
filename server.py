@@ -3,10 +3,12 @@ from fastapi.responses import JSONResponse
 from pathlib import Path
 
 app = FastAPI()
+last_file = ''
 
 @app.post("/upload/")
 async def upload_audio(file: UploadFile = None):
-    print(file.filename)
+    global last_file
+    last_file = file.filename
     if not file:
         raise HTTPException(status_code=400, detail="File not provided")
 
@@ -17,6 +19,9 @@ async def upload_audio(file: UploadFile = None):
         return JSONResponse(status_code=200, content={"message": "File uploaded successfully!"})
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+# @app.get("/transcribe/")
+# async def transcribe_audio(file: UploadFile = None):
 
 if __name__ == "__main__":
     import uvicorn
