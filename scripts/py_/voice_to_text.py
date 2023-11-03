@@ -8,6 +8,7 @@ class voice2text():
     
     def set_credentials_from_json(self, credentials_json_file=''):
         self.openai_key = self.read_key_from_json(credentials_json_file)
+        openai.api_key = self.openai_key
         pass
 
     def read_key_from_json(self, filename):
