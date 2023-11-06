@@ -2,5 +2,6 @@ credentials
 data
 *.wav
 env
+fapi
 *.ipynb
-*__pycache__*
+*pycache*

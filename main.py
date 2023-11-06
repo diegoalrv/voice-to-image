@@ -22,6 +22,7 @@ app.add_middleware(
 last_file = ''
 v2t = voice2text()  # Instancia de la clase voice2text
 v2t.set_credentials_from_json('./credentials/openai_key.json')
+v2t.start_client()
 
 s3_path = './credentials/voice_to_image_accessKeys.csv'
 sd_path = './credentials/stability-ai-api-key.json'
@@ -58,6 +59,7 @@ async def transcribe_audio():
     try:
         file_path = f"./data/output/records/{last_file}"
         text = v2t.transcribe_audio_file(record_name=file_path)
+        print(text)
         return JSONResponse(status_code=200, content={"transcription": text})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

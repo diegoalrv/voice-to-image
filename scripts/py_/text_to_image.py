@@ -69,7 +69,14 @@ class StableDiffusionAPIConnection:
         image_copy = image.copy()
         margin = 10
         position = (image_copy.width - qr_img_resized.width - margin, margin)
-        image_copy.paste(qr_img_resized, position, qr_img_resized)
+        
+        # Dibuja un cuadrado blanco en la posición donde irá el código QR
+        draw = ImageDraw.Draw(image_copy)
+        end_position = (position[0] + qr_img_resized.width, position[1] + qr_img_resized.height)
+        draw.rectangle([position, end_position], fill="white")
+        
+        # Pega el código QR sobre el cuadrado blanco sin usar la máscara
+        image_copy.paste(qr_img_resized, position)
         return image_copy
 
     def process_image(self, input_prompt):
