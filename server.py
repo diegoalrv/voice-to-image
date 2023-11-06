@@ -68,7 +68,6 @@ class Prompt(BaseModel):
 @app.post("/generate-image/")
 async def generate_image_endpoint(prompt: Prompt):
     print(prompt.prompt)
-
     try:
         final_image = sd_generator.process_image(prompt.prompt)
         print(final_image)
