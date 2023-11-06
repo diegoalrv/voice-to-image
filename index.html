@@ -15,9 +15,9 @@
             font-family: Arial, sans-serif;
         }
         img {
-            max-width: 80%;
+            max-width: 50%;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         #transcriptionContainer {
             margin-top: 20px;
@@ -28,11 +28,70 @@
             text-align: center;
         }
     </style>
+    
+    <!--BOTÓN "HACER SOLICITUD"-->
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    #container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 20px;  
+        left: 20px; 
+    }
+
+    #backgroundImage {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+    }
+
+    button {
+        margin-bottom: 10px;  
+        font-size: 15px;
+    }
+    </style>
+    <!-- PARA EL BOTON SALIR-->
+    <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #salirButton {
+      position: fixed;
+      top: 10px;
+      right: 40px;
+    }
+    </style>
 </head>
 <body>
     <img src="assets/images/microphone.png" id="micButton">
     <div id="transcriptionContainer"></div> <!-- Contenedor para la transcripción -->
     <div id="imageContainer"></div> <!-- Contenedor para la imagen generada -->
+
+     <!-- botón para hacer click en HACER SOLICITUD-->
+    <div id="container">
+        <button onclick="hacerSolicitud()">Hacer Solicitud</button>
+        <p id="respuesta"></p>
+    </div>
+    <!-- botón para hacer click en SALIR-->
+    <button id="salirButton">Salir</button>
+
     <script src="scripts/js_/script.js"></script>
+    <script>
+        function hacerSolicitud() {
+            // Lógica para hacer la solicitud GET
+        }
+
+    </script>
+
+
 </body>
 </html>
