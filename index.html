@@ -4,7 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grabador de Audio</title>
+    <link rel="stylesheet" href="style.css">
     <style>
+        body {
+            margin: 0; /* Elimina los márgenes predeterminados del cuerpo */
+            overflow: hidden;
+        }
+
+        .Logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            
+        }
+
+        img#micButton {
+            max-width: 11%; /* Ajusta el tamaño de la imagen con id "micButton" */
+            cursor: pointer;
+            position: fixed;
+            top: 180px;
+            left: -20px;
+        }
+
+        img /* LOGO*/ {
+            max-width: 70%;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
         body {
             background-color: black;
             display: flex;
@@ -14,84 +41,144 @@
             color: white;
             font-family: Arial, sans-serif;
         }
-        img {
-            max-width: 50%;
-            cursor: pointer;
-            margin-top: 30px;
-        }
+        
         #transcriptionContainer {
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: center;
         }
+        
         #imageContainer {
-            width: 100%;
+            max-width: 100%; /* La imagen se ajustará al ancho máximo del contenedor */
+            height: auto;
             text-align: center;
         }
-    </style>
-    
-    <!--BOTÓN "HACER SOLICITUD"-->
-    <style>
-    body {
+
+        /*PARA EL BOTON SALIR*/
+        body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
-    }
+        }
 
-    #container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        position: absolute;
-        top: 20px;  
-        left: 20px; 
-    }
+        #salirButton {
+         position: fixed;
+        top: 10px;
+        right: 40px;
+        }   
 
-    #backgroundImage {
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-    }
+        /* Estilo del modal */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            color: black;
+            text-align: center;
+            z-index: 1000;
+        }
 
-    button {
-        margin-bottom: 10px;  
-        font-size: 15px;
-    }
-    </style>
-    <!-- PARA EL BOTON SALIR-->
-    <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #salirButton {
-      position: fixed;
-      top: 10px;
-      right: 40px;
-    }
+        /* Fondo oscuro detrás del modal */
+        #modalBackground {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        #loadingMessage {
+            display: none;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <img src="assets/images/microphone.png" id="micButton">
+    <header>
+        <a class="Logo" href="https://citylabbiobio.cl/" target="_blank">
+            <img src="C:\Users\Alumno\Desktop\fotocitylab.png" alt="Logo">
+        </a>
+    </header>
+
+    <img src="assets/images/microphone.png" id="micButton" onclick="toggleLoading()">
     <div id="transcriptionContainer"></div> <!-- Contenedor para la transcripción -->
     <div id="imageContainer"></div> <!-- Contenedor para la imagen generada -->
+    <div id="loadingMessage">Cargando...</div>
 
-     <!-- botón para hacer click en HACER SOLICITUD-->
-    <div id="container">
-        <button onclick="hacerSolicitud()">Hacer Solicitud</button>
-        <p id="respuesta"></p>
-    </div>
     <!-- botón para hacer click en SALIR-->
     <button id="salirButton">Salir</button>
 
+     <!-- Modal de confirmación -->
+     <div id="modalBackground"></div>
+     <div id="modal">
+         <p>¿Estás seguro de que quieres salir?</p>
+         <button id="salirButtonModal">Sí</button>
+         <button id="cancelarSalir">No</button>
+     </div>
+   
+    <!--FUNCIONES JAVASCRIPT-->
     <script src="scripts/js_/script.js"></script>
     <script>
-        function hacerSolicitud() {
-            // Lógica para hacer la solicitud GET
+        const micButton = document.querySelector('.micButton');
+        micButton.addEventListener('click', () => {
+        micButton.classList.toggle('clicked'); // Alternar la clase "clicked" en cada clic
+    });
+
+
+         // Obtener el botón de salir
+         const salirButton = document.getElementById('salirButtonModal');
+
+        // Obtener los elementos del modal
+        const modalBackground = document.getElementById('modalBackground');
+        const modal = document.getElementById('modal');
+        const confirmarSalirButton = document.getElementById('salirButtonModal');
+        const cancelarSalirButton = document.getElementById('cancelarSalir');
+
+        // Función para mostrar el modal
+        function mostrarModal() {
+            modalBackground.style.display = 'block';
+            modal.style.display = 'block';
+            // Asocia el evento al botón dentro del modal
+            const salirModalButton = document.getElementById('salirButtonModal');
+            salirModalButton.addEventListener('click', confirmarSalir);
+            cancelarSalirButton.addEventListener('click', ocultarModal);
         }
 
+        // Función para ocultar el modal
+        function ocultarModal() {
+            modalBackground.style.display = 'none';
+            modal.style.display = 'none';
+        }
+
+        // Función para confirmar salir y cerrar la pestaña
+        function confirmarSalir() {
+            // Cerrar la pestaña
+            window.location.href = 'about:blank';
+        }
+
+        // Agregar un evento al botón de salir para mostrar el modal
+        salirButton.addEventListener('click', mostrarModal);
+
+        // Agregar eventos a los botones del modal
+        salirButton.addEventListener('click', mostrarModal);
+        confirmarSalirButton.addEventListener('click', confirmarSalir);
+        cancelarSalirButton.addEventListener('click', ocultarModal);
+    
+        let clickCount = 0;
+
+        function toggleLoading() {
+            clickCount++;
+
+            if (clickCount === 2) {
+                const loadingMessage = document.getElementById('loadingMessage');
+                loadingMessage.style.display = 'block';
+            }
+        }
+        
+    
     </script>
-
-
 </body>
 </html>

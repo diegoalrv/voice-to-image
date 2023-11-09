@@ -8,8 +8,11 @@ class voice2text:
     
     def set_credentials_from_json(self, credentials_json_file=''):
         self.openai_key = self.read_key_from_json(credentials_json_file)
-        openai.api_key = self.openai_key
+        # openai.api_key = self.openai_key
         pass
+
+    def start_client(self):
+        self.client = openai.OpenAI(api_key=self.openai_key)
 
     def read_key_from_json(self, filename):
         try:
@@ -32,5 +35,10 @@ class voice2text:
         
     def transcribe_audio_file(self, record_name=''):
         audio_file = open(record_name, 'rb')
-        transcript = openai.Audio.transcribe('whisper-1', audio_file)
-        return transcript['text']
+        transcript = self.client.audio.transcriptions.create(
+            model='whisper-1',
+            file=audio_file,
+            response_format="text",
+        )
+        print(transcript)
+        return transcript
