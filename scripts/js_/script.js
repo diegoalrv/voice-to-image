@@ -30,12 +30,14 @@ async function toggleRecording() {
 
 async function startRecording() {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    console.log('local')
     mediaRecorder = new MediaRecorder(stream);
     mediaRecorder.ondataavailable = e => chunks.push(e.data);
     mediaRecorder.onstop = saveAudio;
     mediaRecorder.start();
     isRecording = true;
 }
+
 
 function stopRecording() {
     mediaRecorder.stop();
