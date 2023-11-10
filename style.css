@@ -1,0 +1,22 @@
+.Generada {
+    border-radius: 200px;
+    width: 3000px;
+    border: 40px solid rgb(64, 72, 142);
+}
+
+.micButton {
+    max-width: 10%;
+    cursor: pointer;
+    margin-top: 30px;
+    clip-path: circle(50% at top left);
+    transition: clip-path 2s, background-color 2s; /* Transición para clip-path y fondo */
+}
+
+.micButton.clicked {
+    clip-path: circle(50% at top left); /* Mantener la forma del botón como un círculo */
+    background: red; /* Cambiar el fondo a rojo cuando se agrega la clase "clicked" */
+}
+
+.container:hover .micButton {
+    clip-path: circle(150% at top left);
+}
