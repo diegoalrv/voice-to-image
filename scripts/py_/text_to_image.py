@@ -13,6 +13,7 @@ class StableDiffusionAPIConnection:
         self.aws_access_key_id, self.aws_secret_access_key = self.load_s3_credentials(s3_credentials_csv_path)
         self.s3_client = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key)
         self.s3_bucket_name = bucket_name
+        self.s3_filename = ""
 
     def load_api_key(self, json_file):
         with open(json_file, 'r') as file:
@@ -81,7 +82,7 @@ class StableDiffusionAPIConnection:
 
     def process_image(self, input_prompt):
         image = self.generate_image(input_prompt)
-        s3_filename = self.upload_to_s3(image)
-        download_link = self.generate_presigned_url(s3_filename)
+        self.s3_filename = self.upload_to_s3(image)
+        download_link = self.generate_presigned_url(self.s3_filename)
         final_image = self.add_qr_to_image(image, download_link)
         return final_image
