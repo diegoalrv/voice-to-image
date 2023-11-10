@@ -5,3 +5,5 @@ env
 fapi
 *.ipynb
 *pycache*
+dashboard.py
+data_all.csv
