@@ -7,3 +7,6 @@ fapi
 *pycache*
 dashboard.py
 data_all.csv
+*.xlsx
+*.zip
+voice-to-text.ipynb
