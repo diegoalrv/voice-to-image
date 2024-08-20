@@ -1,0 +1,14 @@
+credentials
+data
+*.wav
+env
+fapi
+*.ipynb
+*pycache*
+dashboard.py
+data_all.csv
+*.xlsx
+*.zip
+voice-to-text.ipynb
+data_all.csv
+*/.env
