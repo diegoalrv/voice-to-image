@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>README - Despliegue de Aplicación Web con Docker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        code {
+            background-color: #eaeaea;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        pre {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instrucciones para Desplegar la Aplicación Web con Docker</h1>
+
+        <p>Sigue los pasos a continuación para desplegar la aplicación web usando Docker:</p>
+
+        <h2>Requisitos Previos</h2>
+        <ul>
+            <li>Asegúrate de tener <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker</a> instalado en tu sistema.</li>
+            <li>Asegúrate de tener <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a> instalado en tu sistema.</li>
+        </ul>
+
+        <h2>Pasos para Ejecutar el Contenedor</h2>
+
+        <h3>1. Verificar que la Carpeta Está Descargada</h3>
+        <p>Asegúrate de que la carpeta del proyecto ya esté descargada en tu sistema. No es necesario clonar o descargar el repositorio nuevamente.</p>
+
+        <h3>2. Ejecutar el Archivo <code>run.bat</code></h3>
+        <p>En la raíz de la carpeta del proyecto, encontrarás un archivo llamado <code>run.bat</code>. Este archivo ejecutará automáticamente el comando <code>docker-compose up -d --build</code>, que levantará el contenedor de Docker con tu aplicación web. Para ejecutarlo, sigue estos pasos:</p>
+        <pre><code>./run.bat</code></pre>
+
+        <p>Este archivo ejecutará los siguientes pasos automáticamente:</p>
+        <ul>
+            <li>Compilar las imágenes de Docker necesarias.</li>
+            <li>Levantar los servicios en segundo plano (<code>-d</code>).</li>
+        </ul>
+
+        <h3>3. Acceder a la Aplicación Web</h3>
+        <p>Una vez que el contenedor esté en ejecución, abre tu navegador y navega a <a href="http://localhost" target="_blank">http://localhost</a> para ver la aplicación web en funcionamiento. La aplicación estará disponible en el puerto 80.</p>
+
+        <h2>Detener y Eliminar el Contenedor</h2>
+
+        <h3>1. Detener el Contenedor</h3>
+        <p>Para detener el contenedor en ejecución, puedes usar el siguiente comando dentro de la carpeta del proyecto:</p>
+        <pre><code>docker-compose down</code></pre>
+
+        <h2>Notas Adicionales</h2>
+        <ul>
+            <li>El archivo <code>run.bat</code> se encarga de ejecutar automáticamente el comando <code>docker-compose up -d --build</code>.</li>
+            <li>Si realizas cambios en el código fuente de la aplicación, ejecuta nuevamente el archivo <code>run.bat</code> para reconstruir la imagen y desplegar los cambios.</li>
+            <li>Asegúrate de que el puerto 80 no esté siendo utilizado por otro proceso en tu máquina local.</li>
+        </ul>
+    </div>
+</body>
+</html>

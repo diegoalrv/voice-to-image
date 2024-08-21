@@ -12,3 +12,6 @@ data_all.csv
 voice-to-text.ipynb
 data_all.csv
 */.env
+*.ipynb
+*.png
+testing/*
